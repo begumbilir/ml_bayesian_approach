@@ -10,18 +10,33 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, classification_report
+from imblearn.over_sampling import SMOTE
 
+
+smote=SMOTE(sampling_strategy='minority') 
 # load dataset
 df = pd.read_csv("winequality-red.csv")
 
 X = df.drop(columns=["quality"]).values  #wine data
 y = df["quality"].values #wine quality
 
+#SMOTE:
+print(X.shape)
+print(y.shape)
+X_SMOTE,y_SMOTE=smote.fit_resample(X,y)
+X_SMOTE,y_SMOTE=smote.fit_resample(X_SMOTE,y_SMOTE)
+X_SMOTE,y_SMOTE=smote.fit_resample(X_SMOTE,y_SMOTE)
+X_SMOTE,y_SMOTE=smote.fit_resample(X_SMOTE,y_SMOTE)
+X_SMOTE,y_SMOTE=smote.fit_resample(X_SMOTE,y_SMOTE)
+print(X.shape)
+print(y.shape)
+
 # standardize features
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
-
+X_scaled_SMOTE = scaler.fit_transform(X_SMOTE)
 y_class = np.where(y >= 7, 2, np.where((y > 4) & (y < 7), 1, 0))
+y_class_SMOTE = np.where(y_SMOTE >= 7, 2, np.where((y_SMOTE > 4) & (y_SMOTE < 7), 1, 0))
 
 # Bayesian Linear Regression using the EM Algorithm
 def em_bayesian_linear_regression(X, y, max_iter=100, tol=1e-6):
@@ -69,7 +84,7 @@ def predict(X, mu, Sigma):
 
 
 # Train model using EM algorithm
-mu_opt_EM, Sigma_opt_EM, alpha_opt_EM, beta_opt_EM = em_bayesian_linear_regression(X_scaled, y)
+mu_opt_EM, Sigma_opt_EM, alpha_opt_EM, beta_opt_EM = em_bayesian_linear_regression(X_scaled_SMOTE, y_SMOTE)
 print(f"Optimized Alpha: {alpha_opt_EM}, Optimized Beta: {beta_opt_EM}")
 
 
