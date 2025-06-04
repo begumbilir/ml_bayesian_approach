@@ -13,6 +13,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from imblearn.over_sampling import SMOTE
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 smote=SMOTE(sampling_strategy='minority') 
 
@@ -62,3 +63,12 @@ y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f'Accuracy: {accuracy:.4f}')
 print(classification_report(y_test, y_pred))
+
+# Create the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Display the confusion matrix
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Class 0", "Class 1", 'Class2'])
+disp.plot(cmap=plt.cm.Blues)
+plt.title("Confusion Matrix")
+plt.show()

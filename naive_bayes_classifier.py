@@ -7,10 +7,12 @@ Created on Sun Mar 16 09:49:54 2025
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 # load dataset
 df = pd.read_csv("winequality-red.csv")  
@@ -40,6 +42,15 @@ y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f'Accuracy: {accuracy:.4f}')
 print(classification_report(y_test, y_pred))
+
+# Create the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Display the confusion matrix
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["Class 0", "Class 1", 'Class2'])
+disp.plot(cmap=plt.cm.Blues)
+plt.title("Confusion Matrix")
+plt.show()
 
 #############################################################################3
 # Naïve Bayes algorithm from scratch

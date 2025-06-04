@@ -20,6 +20,7 @@ smote=SMOTE(sampling_strategy='minority')
 df = pd.read_csv("winequality-red.csv")
 
 X = df.drop(columns=['quality'])
+#X = np.hstack([X,X])
 y = df['quality']
 
 # Create histogram of quality values
@@ -86,6 +87,7 @@ for k in k_values:
     # Train on full training set and evaluate on test set
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
+
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Test Set Accuracy: {accuracy:.4f}')
     print(classification_report(y_test, y_pred))
